@@ -1,11 +1,14 @@
-﻿using MediatR;
+﻿
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.ProfileApi.API.Response;
 using MovieApp.ProfileApi.Application.Commands;
 using MovieApp.ProfileApi.Application.Exceptions;
 using MovieApp.ProfileApi.Application.Queries;
 using MovieApp.ProfileApi.Application.Responses.Movie;
+using MovieApp.ProfileApi.Application.Responses.Rating;
 using MovieApp.ProfileApi.Application.Responses.User;
+using System;
 using System.Net;
 
 namespace MovieApp.ProfileApi.API.Controllers;
@@ -23,6 +26,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ResponseBase<UserResponse>), 200)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var user = await _mediator.Send(new GetUserByIdQuery(id));
@@ -31,6 +35,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(ResponseBase), 200)]
+    [ProducesResponseType(typeof(ResponseBase), 409)]
+    [ProducesResponseType(typeof(ProblemDetails), 400)]
     public async Task<IActionResult> Post([FromBody] CreateUserCommand createUserCommand)
     {
         try
@@ -41,11 +48,25 @@ public class UserController : ControllerBase
         }
         catch(ValidationException ex)
         {
-            return BadRequest(new ResponseBase<IDictionary<string, string[]>>(ex.Errors, HttpStatusCode.BadRequest, "Validation error"));
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "ValidationFailure",
+                Title = "Validation error",
+                Detail = "One or more validation errors has occurred"
+            };
+
+            if (ex.Errors is not null)
+            {
+                problemDetails.Extensions["errors"] = ex.Errors;
+            }
+
+            return BadRequest(problemDetails);
         }
     }
 
     [HttpGet("{id}/favorites")]
+    [ProducesResponseType(typeof(ResponseBase<MovieResponse>), 200)]
     public async Task<IActionResult> GetFavorites([FromRoute] Guid id, Guid genreId, string searchTerm = "", int skip = 0, int take = 30)
     {
         var getUserFavoritesQuery = new GetUserFavoriteMoviesQuery()
@@ -63,19 +84,18 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}/ratings")]
+    [ProducesResponseType(typeof(ResponseBase<RatingResponse>), 200)]
     public async Task<IActionResult> GetRatings([FromRoute] Guid id, Guid genreId, string searchTerm = "", int skip = 0, int take = 30)
     {
-        var getUserFavoritesQuery = new GetUserFavoriteMoviesQuery()
+        var getUserRatingsQuery = new GetUserRatingsQuery()
         {
             Id = id,
-            GenreId = genreId,
-            SearchTerm = searchTerm,
             Take = take,
             Skip = skip
         };
 
-        var movies = await _mediator.Send(getUserFavoritesQuery);
+        var ratings = await _mediator.Send(getUserRatingsQuery);
 
-        return Ok(new ResponseBase<IEnumerable<MovieResponse>>(movies, System.Net.HttpStatusCode.OK));
+        return Ok(new ResponseBase<IEnumerable<RatingResponse>>(ratings, System.Net.HttpStatusCode.OK));
     }
 }

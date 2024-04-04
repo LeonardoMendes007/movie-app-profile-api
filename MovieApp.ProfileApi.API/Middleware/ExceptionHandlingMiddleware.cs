@@ -1,7 +1,7 @@
-﻿using FluentValidation.Results;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using MovieApp.ProfileApi.API.Response;
 using MovieApp.ProfileApi.Domain.Exceptions;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace MovieApp.ProfileApi.API.Middleware;
