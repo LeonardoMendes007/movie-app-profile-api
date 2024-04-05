@@ -1,7 +1,7 @@
 ﻿using MovieApp.ProfileApi.Domain.Entities.Base;
 
 namespace MovieApp.ProfileApi.Domain.Entities;
-public class User : Entity
+public class Profile : Entity
 {
     public string UserName { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
@@ -10,9 +10,9 @@ public class User : Entity
     public IEnumerable<Movie> FavoritesMovies { get; set; }
     public IEnumerable<Rating> Ratings { get; set; }
 
-    public User(Guid id, string userName)
+    public Profile(Guid id, string UserName)
     {
         Id = id;
-        UserName = userName;
+        UserName = UserName;
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace MovieApp.ProfileApi.Domain.Exceptions;
-public class UserAlreadyExistsException : Exception
+public class ProfileAlreadyExistsException : Exception
 {
     public Guid Id { get; set; }
-    public UserAlreadyExistsException(Guid id) : base($"Already exists user with id = {id}.")
+    public ProfileAlreadyExistsException(Guid id) : base($"Already exists Profile with id = {id}.")
     {
         Id = id;
     }

@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MovieApp.ProfileApi.Domain.Entities;
 
 namespace MovieApp.Infra.Data.Persistence.Configuration;
-public class ApplicationUserConfiguration : IEntityTypeConfiguration<User>
+public class ApplicationProfileConfiguration : IEntityTypeConfiguration<Profile>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<Profile> builder)
     {
-        builder.ToTable("tb_user");
+        builder.ToTable("tb_profile");
         builder.Property(x => x.Id).HasColumnName("id").HasMaxLength(36);
         builder.Property(x => x.UserName).HasColumnName("username").HasMaxLength(50);
         builder.Property(x => x.CreatedDate).HasColumnName("dt_created").IsRequired();
@@ -16,11 +16,11 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(x => x.Id);
 
         builder.HasMany(e => e.MoviesRating)
-        .WithMany(e => e.UserRating)
+        .WithMany(e => e.ProfileRating)
         .UsingEntity<Rating>();
 
         builder.HasMany(e => e.FavoritesMovies)
-            .WithMany(e => e.FavoritesUsers)
+            .WithMany(e => e.FavoritesProfiles)
             .UsingEntity("tb_favorites_movies");
     }
 }

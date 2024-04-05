@@ -35,7 +35,7 @@ public class ExceptionHandlingMiddleware
 
         var response = exception switch
         {
-            UserAlreadyExistsException _ => new ResponseBase(HttpStatusCode.Conflict, exception.Message),
+            ProfileAlreadyExistsException _ => new ResponseBase(HttpStatusCode.Conflict, exception.Message),
             ResourceNotFoundException _ => new ResponseBase(HttpStatusCode.NotFound, exception.Message),
             _ => new ResponseBase(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")
         } ;

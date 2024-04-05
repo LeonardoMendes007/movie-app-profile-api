@@ -5,30 +5,30 @@ using MovieApp.ProfileApi.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace MovieApp.Infra.Data.Persistence.Repositories;
-public class UserRepository : IUserRepository
+public class ProfileRepository : IProfileRepository
 {
     private readonly MovieAppDbContext _movieAppDbContext;
-    private readonly DbSet<User> _dbSet;
-    public UserRepository(MovieAppDbContext movieAppDbContext)
+    private readonly DbSet<Profile> _dbSet;
+    public ProfileRepository(MovieAppDbContext movieAppDbContext)
     {
         _movieAppDbContext = movieAppDbContext;
-        _dbSet = _movieAppDbContext.Set<User>();
+        _dbSet = _movieAppDbContext.Set<Profile>();
     }
 
-    public async Task<User> FindByIdAsync(Guid id)
+    public async Task<Profile> FindByIdAsync(Guid id)
     {
-        var user = await _dbSet.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
-        return user;
+        var Profile = await _dbSet.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
+        return Profile;
     }
 
-    public async Task SaveAsync(User user)
+    public async Task SaveAsync(Profile Profile)
     {
-        await _dbSet.AddAsync(user);
+        await _dbSet.AddAsync(Profile);
     }
 
-    public async Task UpdateAsync(User user)
+    public async Task UpdateAsync(Profile Profile)
     {
-        _dbSet.Update(user);
+        _dbSet.Update(Profile);
     }
     public async Task RemoveAsync(Guid id)
     {

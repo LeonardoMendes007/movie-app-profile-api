@@ -3,7 +3,7 @@
 namespace MovieApp.ProfileApi.Application.Responses.Rating;
 public class RatingResponse
 {
-    public Guid UserId { get; set; }
+    public Guid ProfileId { get; set; }
     public string UserName { get; set; }
     public MovieResponse Movie { get; set; }
     public int Score { get; set; }

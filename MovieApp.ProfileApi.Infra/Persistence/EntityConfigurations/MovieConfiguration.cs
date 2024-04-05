@@ -22,7 +22,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
         builder.HasIndex(x => new { x.Name, x.ReleaseDate}).IsUnique();
 
-        builder.HasMany(e => e.UserRating)
+        builder.HasMany(e => e.ProfileRating)
         .WithMany(e => e.MoviesRating)
         .UsingEntity<Rating>();
 

@@ -4,8 +4,8 @@ namespace MovieApp.ProfileApi.Domain.Entities;
 
 public class Rating
 {
-    public Guid UserId { get; set; }
-    public User User { get; set; }
+    public Guid ProfileId { get; set; }
+    public Profile Profile { get; set; }
     public Guid MovieId { get; set; }
     public Movie Movie { get; set; }
     public int Score { get; set; }

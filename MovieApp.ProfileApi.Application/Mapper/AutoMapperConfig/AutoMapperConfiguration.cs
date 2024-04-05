@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace MovieApp.ProfileApi.Application.AutoMapper.AutoMapperConfig;
+namespace MovieApp.ProfileApi.Application.Mapper.AutoMapperConfig;
 public static class AutoMapperConfiguration
 {
     public static MapperConfiguration RegisterMappings()

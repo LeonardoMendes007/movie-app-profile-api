@@ -13,14 +13,14 @@ public class RatingConfiguration : IEntityTypeConfiguration<Rating>
         builder.Property(x => x.CreatedDate).HasColumnName("dt_created").IsRequired();
         builder.Property(x => x.UpdatedDate).HasColumnName("dt_update");
 
-        builder.HasKey(x => new {x.UserId, x.MovieId});
+        builder.HasKey(x => new {x.ProfileId, x.MovieId});
 
         builder.HasOne(r => r.Movie)
             .WithMany(m => m.Ratings)
             .HasForeignKey(r => r.MovieId);
 
-        builder.HasOne(r => r.User)
+        builder.HasOne(r => r.Profile)
             .WithMany(u => u.Ratings)
-            .HasForeignKey(r => r.UserId);
+            .HasForeignKey(r => r.ProfileId);
         }
 }

@@ -4,7 +4,7 @@ using MovieApp.ProfileApi.Domain.Entities;
 namespace MovieApp.Infra.Data.Persistence;
 public sealed class MovieAppDbContext : DbContext
 {
-    public DbSet<User> Users { get; set; } = default!;
+    public DbSet<Profile> Profiles { get; set; } = default!;
 
     public DbSet<Movie> Movies { get; set; } = default!;
 

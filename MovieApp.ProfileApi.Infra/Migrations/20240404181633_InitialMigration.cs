@@ -45,17 +45,17 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tb_user",
+                name: "tb_Profile",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 36, nullable: false),
-                    username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     dt_created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     dt_update = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tb_user", x => x.id);
+                    table.PrimaryKey("PK_tb_Profile", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,11 +87,11 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                 columns: table => new
                 {
                     FavoritesMoviesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FavoritesUsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    FavoritesProfilesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tb_favorites_movies", x => new { x.FavoritesMoviesId, x.FavoritesUsersId });
+                    table.PrimaryKey("PK_tb_favorites_movies", x => new { x.FavoritesMoviesId, x.FavoritesProfilesId });
                     table.ForeignKey(
                         name: "FK_tb_favorites_movies_tb_movie_FavoritesMoviesId",
                         column: x => x.FavoritesMoviesId,
@@ -99,9 +99,9 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tb_favorites_movies_tb_user_FavoritesUsersId",
-                        column: x => x.FavoritesUsersId,
-                        principalTable: "tb_user",
+                        name: "FK_tb_favorites_movies_tb_Profile_FavoritesProfilesId",
+                        column: x => x.FavoritesProfilesId,
+                        principalTable: "tb_Profile",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -110,7 +110,7 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                 name: "tb_rating",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     score = table.Column<int>(type: "int", maxLength: 1, nullable: false),
                     comment = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -119,7 +119,7 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tb_rating", x => new { x.UserId, x.MovieId });
+                    table.PrimaryKey("PK_tb_rating", x => new { x.ProfileId, x.MovieId });
                     table.ForeignKey(
                         name: "FK_tb_rating_tb_movie_MovieId",
                         column: x => x.MovieId,
@@ -127,9 +127,9 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tb_rating_tb_user_UserId",
-                        column: x => x.UserId,
-                        principalTable: "tb_user",
+                        name: "FK_tb_rating_tb_Profile_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "tb_Profile",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -168,9 +168,9 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_tb_favorites_movies_FavoritesUsersId",
+                name: "IX_tb_favorites_movies_FavoritesProfilesId",
                 table: "tb_favorites_movies",
-                column: "FavoritesUsersId");
+                column: "FavoritesProfilesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_genre_name",
@@ -214,7 +214,7 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                 name: "tb_movie");
 
             migrationBuilder.DropTable(
-                name: "tb_user");
+                name: "tb_Profile");
         }
     }
 }

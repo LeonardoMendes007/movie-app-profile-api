@@ -235,7 +235,7 @@ namespace MovieApp.ProfileApi.Infra.Migrations
 
             modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.Rating", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("ProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("MovieId")
@@ -260,14 +260,14 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("dt_update");
 
-                    b.HasKey("UserId", "MovieId");
+                    b.HasKey("ProfileId", "MovieId");
 
                     b.HasIndex("MovieId");
 
                     b.ToTable("tb_rating", (string)null);
                 });
 
-            modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.User", b =>
+            modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.Profile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -287,11 +287,11 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("username");
+                        .HasColumnName("UserName");
 
                     b.HasKey("Id");
 
-                    b.ToTable("tb_user", (string)null);
+                    b.ToTable("tb_Profile", (string)null);
                 });
 
             modelBuilder.Entity("tb_favorites_movies", b =>
@@ -299,12 +299,12 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                     b.Property<Guid>("FavoritesMoviesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FavoritesUsersId")
+                    b.Property<Guid>("FavoritesProfilesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("FavoritesMoviesId", "FavoritesUsersId");
+                    b.HasKey("FavoritesMoviesId", "FavoritesProfilesId");
 
-                    b.HasIndex("FavoritesUsersId");
+                    b.HasIndex("FavoritesProfilesId");
 
                     b.ToTable("tb_favorites_movies");
                 });
@@ -332,15 +332,15 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MovieApp.ProfileApi.Domain.Entities.User", "User")
+                    b.HasOne("MovieApp.ProfileApi.Domain.Entities.Profile", "Profile")
                         .WithMany("Ratings")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Movie");
 
-                    b.Navigation("User");
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("tb_favorites_movies", b =>
@@ -351,9 +351,9 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MovieApp.ProfileApi.Domain.Entities.User", null)
+                    b.HasOne("MovieApp.ProfileApi.Domain.Entities.Profile", null)
                         .WithMany()
-                        .HasForeignKey("FavoritesUsersId")
+                        .HasForeignKey("FavoritesProfilesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -378,7 +378,7 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                     b.Navigation("Ratings");
                 });
 
-            modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.User", b =>
+            modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.Profile", b =>
                 {
                     b.Navigation("Ratings");
                 });
