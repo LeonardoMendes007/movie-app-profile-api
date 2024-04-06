@@ -1,7 +1,6 @@
-﻿using Azure;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieApp.ProfileApi.API.Response;
+using MovieApp.ProfileApi.Application.Exceptions;
 using MovieApp.ProfileApi.Domain.Exceptions;
 using System.Net;
 
@@ -26,6 +25,8 @@ public class ExceptionHandlingMiddleware
         }
         catch (ValidationException ex)
         {
+            _logger.LogWarning("Validation error occurred");
+
             var problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,
@@ -39,29 +40,56 @@ public class ExceptionHandlingMiddleware
                 problemDetails.Extensions["errors"] = ex.Errors;
             }
 
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            await context.Response.WriteAsJsonAsync(problemDetails);
+            await WriteResponseAsync<ProblemDetails>(context, problemDetails, HttpStatusCode.BadRequest);
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            _logger.LogWarning("Resource not found");
+
+            var response = ResponseBase.ResponseBaseFactory(HttpStatusCode.NotFound, ex.Message);
+
+            await WriteResponseAsync<ResponseBase>(context, response, HttpStatusCode.NotFound);
+
+        }
+        catch (ProfileAlreadyExistsException ex)
+        {
+            _logger.LogWarning("Profile already exists");
+
+            var response = ResponseBase.ResponseBaseFactory(HttpStatusCode.Conflict, ex.Message);
+
+            await WriteResponseAsync<ResponseBase>(context, response, HttpStatusCode.Conflict);
+        }
+        catch (MovieAlreadyExistsFavoriteException ex)
+        {
+            _logger.LogWarning("Movie already exists in favorites");
+
+            var response = ResponseBase.ResponseBaseFactory(HttpStatusCode.Conflict, ex.Message);
+
+            await WriteResponseAsync<ResponseBase>(context, response, HttpStatusCode.Conflict);
+        }
+        catch (RatingAlreadyExistsForMovieException ex)
+        {
+            _logger.LogWarning("Rating already exists for movie");
+
+            var response = ResponseBase.ResponseBaseFactory(HttpStatusCode.Conflict, ex.Message);
+
+            await WriteResponseAsync<ResponseBase>(context, response, HttpStatusCode.Conflict);
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, ex);
+            _logger.LogError(ex, "Unhandled exception occurred");
+
+            var response = ResponseBase.ResponseBaseFactory(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.");
+
+            await WriteResponseAsync<ResponseBase>(context, response, HttpStatusCode.InternalServerError);
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    public async Task WriteResponseAsync<T>(HttpContext context, T response, HttpStatusCode httpStatusCode)
     {
-        _logger.LogError(exception, "An error occurred.");
-
-        var response = exception switch
-        {
-            ProfileAlreadyExistsException _ => new ResponseBase(HttpStatusCode.Conflict, exception.Message),
-            ResourceNotFoundException _ => new ResponseBase(HttpStatusCode.NotFound, exception.Message),
-            _ => new ResponseBase(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")
-        } ;
 
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)response.StatusCode;
+        context.Response.StatusCode = (int)httpStatusCode;
         await context.Response.WriteAsJsonAsync(response);
     }
 }

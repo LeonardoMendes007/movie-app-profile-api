@@ -6,5 +6,6 @@ public interface IUnitOfWork
 {
     IMovieRepository MovieRepository { get; }
     IProfileRepository ProfileRepository { get; }
+    IRatingRepository RatingRepository { get; }
     Task CommitAsync();
 }

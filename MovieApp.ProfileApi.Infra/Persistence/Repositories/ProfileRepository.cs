@@ -16,8 +16,8 @@ public class ProfileRepository : IProfileRepository
     }
 
     public async Task<Profile> FindByIdAsync(Guid id)
-    { 
-        return await _profiles.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
+    {
+        return await _profiles.Where(x => x.Id == id).Include(x => x.Ratings).Include(x => x.FavoritesMovies).AsNoTracking().FirstOrDefaultAsync();
     }
 
     public IQueryable<Movie> FindAllFavoriteMoviesByIdAsync(Guid id)

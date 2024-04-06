@@ -6,19 +6,19 @@ using System.Linq;
 using System.Linq.Expressions;
 
 namespace MovieApp.ProfileApi.Infra.Persistence.Repositories;
-public class MovieRepository : IMovieRepository
+public class RatingRepository : IRatingRepository
 {
     private readonly MovieAppDbContext _movieAppDbContext;
-    private readonly DbSet<Movie> _dbSetMovie;
+    private readonly DbSet<Rating> _dbSetRating;
 
-    public MovieRepository(MovieAppDbContext movieAppDbContext)
+    public RatingRepository(MovieAppDbContext movieAppDbContext)
     {
         _movieAppDbContext = movieAppDbContext;
-        _dbSetMovie = _movieAppDbContext.Set<Movie>();
+        _dbSetRating = _movieAppDbContext.Set<Rating>();
     }
 
-    public async Task<Movie> FindByIdAsync(Guid id)
-    { 
-        return await _dbSetMovie.Where(x => x.Id == id).AsNoTracking().FirstOrDefaultAsync();
+    public async Task SaveAsync(Rating rating)
+    {
+        await _movieAppDbContext.Ratings.AddAsync(rating);
     }
 }

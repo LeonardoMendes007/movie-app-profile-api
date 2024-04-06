@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private IMovieRepository _movieRepository;
     private IProfileRepository _profileRepository;
+    private IRatingRepository _ratingRepository;
 
     private readonly MovieAppDbContext _movieAppDbContext;
 
@@ -30,6 +31,14 @@ public class UnitOfWork : IUnitOfWork
         get
         {
             return _profileRepository = _profileRepository ?? new ProfileRepository(_movieAppDbContext);
+        }
+    }
+
+    public IRatingRepository RatingRepository
+    {
+        get
+        {
+            return _ratingRepository = _ratingRepository ?? new RatingRepository(_movieAppDbContext);
         }
     }
 

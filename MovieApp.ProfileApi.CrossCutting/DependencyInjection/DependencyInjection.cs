@@ -3,6 +3,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MovieApp.Domain.Interfaces.Repository;
 using MovieApp.Infra.Data.Persistence;
 using MovieApp.ProfileApi.Application.Commands;
@@ -19,9 +21,18 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
+        
+
         #region Banco de dados
         services.AddDbContext<MovieAppDbContext>(options =>
-           options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
+        {
+            options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection"));
+            options.UseLoggerFactory(LoggerFactory.Create(builder =>
+            {
+                builder.AddFilter((category, level) =>
+                    category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information);
+            }));
+        });
         #endregion
 
 
@@ -38,11 +49,13 @@ public static class DependencyInjection
         #region Repositories
         services.AddScoped<IProfileRepository, ProfileRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();
+        services.AddScoped<IRatingRepository, RatingRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         #endregion
 
         #region Validators
         services.AddTransient<IValidator<CreateProfileCommand>, CreateProfileCommandValidator>();
+        services.AddTransient<IValidator<RegisterMovieRatingCommand>, RegisterMovieRatingCommandValidator>();
         #endregion
 
 
