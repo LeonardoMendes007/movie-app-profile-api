@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Azure;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.ProfileApi.API.Response;
 using MovieApp.ProfileApi.Domain.Exceptions;
@@ -22,6 +23,25 @@ public class ExceptionHandlingMiddleware
         try
         {
             await _next(context);
+        }
+        catch (ValidationException ex)
+        {
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "ValidationFailure",
+                Title = "Validation error",
+                Detail = "One or more validation errors has occurred"
+            };
+
+            if (ex.Errors is not null)
+            {
+                problemDetails.Extensions["errors"] = ex.Errors;
+            }
+
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await context.Response.WriteAsJsonAsync(problemDetails);
         }
         catch (Exception ex)
         {

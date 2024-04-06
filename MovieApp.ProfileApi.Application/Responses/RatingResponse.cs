@@ -1,6 +1,4 @@
-﻿using MovieApp.ProfileApi.Application.Responses.Movie;
-
-namespace MovieApp.ProfileApi.Application.Responses.Rating;
+﻿namespace MovieApp.ProfileApi.Application.Responses;
 public class RatingResponse
 {
     public Guid ProfileId { get; set; }

@@ -1,13 +1,14 @@
 ﻿
+using Azure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.ProfileApi.API.Response;
 using MovieApp.ProfileApi.Application.Commands;
 using MovieApp.ProfileApi.Application.Exceptions;
+using MovieApp.ProfileApi.Application.Pagination;
 using MovieApp.ProfileApi.Application.Queries;
-using MovieApp.ProfileApi.Application.Responses.Movie;
-using MovieApp.ProfileApi.Application.Responses.Rating;
-using MovieApp.ProfileApi.Application.Responses.Profile;
+using MovieApp.ProfileApi.Application.Responses;
+using System.Net;
 
 namespace MovieApp.ProfileApi.API.Controllers;
 [Route("api/profile")]
@@ -29,7 +30,7 @@ public class ProfileController : ControllerBase
     {
         var Profile = await _mediator.Send(new GetProfileByIdQuery(id));
 
-        return Ok(new ResponseBase<ProfileResponse>(Profile, System.Net.HttpStatusCode.OK));
+        return Ok(new ResponseBase<ProfileResponse>(Profile, HttpStatusCode.OK));
     }
 
     [HttpPost]
@@ -38,62 +39,54 @@ public class ProfileController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), 400)]
     public async Task<IActionResult> Post([FromBody] CreateProfileCommand createProfileCommand)
     {
-        try
-        {
-            var id = await _mediator.Send(createProfileCommand);
+        var id = await _mediator.Send(createProfileCommand);
 
-            return CreatedAtAction(nameof(Get), new { id = id }, new ResponseBase(System.Net.HttpStatusCode.Created));
-        }
-        catch(ValidationException ex)
-        {
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "ValidationFailure",
-                Title = "Validation error",
-                Detail = "One or more validation errors has occurred"
-            };
+        return CreatedAtAction(nameof(Get), new { id = id }, new ResponseBase(HttpStatusCode.Created));
+        
+    }
 
-            if (ex.Errors is not null)
-            {
-                problemDetails.Extensions["errors"] = ex.Errors;
-            }
+    [HttpPost("{id}/favorites")]
+    [ProducesResponseType(typeof(ResponseBase), 204)]
+    public async Task<IActionResult> GetFavorites([FromRoute] Guid id, [FromBody] RegisterFavoriteMovieCommand registerFavoriteMovieCommand)
+    {
+        registerFavoriteMovieCommand.SetProfileId(id); 
 
-            return BadRequest(problemDetails);
-        }
+        await _mediator.Send(registerFavoriteMovieCommand);
+
+        return StatusCode((int)HttpStatusCode.NoContent, new ResponseBase(HttpStatusCode.NoContent));
     }
 
     [HttpGet("{id}/favorites")]
-    [ProducesResponseType(typeof(ResponseBase<MovieResponse>), 200)]
-    public async Task<IActionResult> GetFavorites([FromRoute] Guid id, Guid genreId, string searchTerm = "", int skip = 0, int take = 30)
+    [ProducesResponseType(typeof(ResponseBase<PagedList<MovieResponse>>), 200)]
+    public async Task<IActionResult> GetFavorites([FromRoute] Guid id, Guid? genreId = null, string searchTerm = "", int page = 1, int pageSize = 30)
     {
         var getProfileFavoritesQuery = new GetProfileFavoriteMoviesQuery()
         {
             Id = id,
             GenreId = genreId,
             SearchTerm = searchTerm,
-            Take = take,
-            Skip = skip
+            Page = page,
+            PageSize = pageSize
         };
 
         var movies = await _mediator.Send(getProfileFavoritesQuery);
 
-        return Ok(new ResponseBase<IEnumerable<MovieResponse>>(movies, System.Net.HttpStatusCode.OK));
+        return Ok(new ResponseBase<PagedList<MovieResponse>>(movies, HttpStatusCode.OK));
     }
 
     [HttpGet("{id}/ratings")]
-    [ProducesResponseType(typeof(ResponseBase<RatingResponse>), 200)]
-    public async Task<IActionResult> GetRatings([FromRoute] Guid id, Guid genreId, string searchTerm = "", int skip = 0, int take = 30)
+    [ProducesResponseType(typeof(ResponseBase<PagedList<RatingResponse>>), 200)]
+    public async Task<IActionResult> GetRatings([FromRoute] Guid id, int page = 0, int pageSize = 30)
     {
         var getProfileRatingsQuery = new GetProfileRatingsQuery()
         {
             Id = id,
-            Take = take,
-            Skip = skip
+            Page = page,
+            PageSize = pageSize
         };
 
         var ratings = await _mediator.Send(getProfileRatingsQuery);
 
-        return Ok(new ResponseBase<IEnumerable<RatingResponse>>(ratings, System.Net.HttpStatusCode.OK));
+        return Ok(new ResponseBase<PagedList<RatingResponse>>(ratings, HttpStatusCode.OK));
     }
 }

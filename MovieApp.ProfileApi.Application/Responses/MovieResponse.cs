@@ -1,6 +1,4 @@
-﻿using MovieApp.ProfileApi.Application.Responses.Genre;
-
-namespace MovieApp.ProfileApi.Application.Responses.Movie;
+﻿namespace MovieApp.ProfileApi.Application.Responses;
 public class MovieResponse
 {
     public Guid Id { get; set; }

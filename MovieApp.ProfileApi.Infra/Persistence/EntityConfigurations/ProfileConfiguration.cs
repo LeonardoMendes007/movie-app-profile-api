@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MovieApp.ProfileApi.Domain.Entities;
 
 namespace MovieApp.Infra.Data.Persistence.Configuration;
-public class ApplicationProfileConfiguration : IEntityTypeConfiguration<Profile>
+public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 {
     public void Configure(EntityTypeBuilder<Profile> builder)
     {

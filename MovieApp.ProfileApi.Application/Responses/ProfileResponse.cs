@@ -1,4 +1,4 @@
-﻿namespace MovieApp.ProfileApi.Application.Responses.Profile;
+﻿namespace MovieApp.ProfileApi.Application.Responses;
 public class ProfileResponse
 {
     public Guid Id { get; set; }

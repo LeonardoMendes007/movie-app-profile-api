@@ -6,13 +6,8 @@ public class Profile : Entity
     public string UserName { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; }
-    public IEnumerable<Movie> MoviesRating { get; set; }
-    public IEnumerable<Movie> FavoritesMovies { get; set; }
-    public IEnumerable<Rating> Ratings { get; set; }
+    public IList<Movie> MoviesRating { get; set; } = new List<Movie>();
+    public IList<Movie> FavoritesMovies { get; set; } = new List<Movie>();
+    public IList<Rating> Ratings { get; set; } = new List<Rating>();
 
-    public Profile(Guid id, string UserName)
-    {
-        Id = id;
-        UserName = UserName;
-    }
 }

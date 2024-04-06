@@ -6,5 +6,5 @@ namespace MovieApp.ProfileApi.Domain.Entities;
 public class Genre : Entity
 {
     public string Name { get; set; }
-    public IEnumerable<Movie> Movies { get; set; }
+    public IList<Movie> Movies { get; set; }
 }

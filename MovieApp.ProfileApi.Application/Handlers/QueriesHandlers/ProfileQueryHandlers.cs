@@ -1,31 +1,31 @@
 ﻿using AutoMapper;
 using MediatR;
-using MovieApp.ProfileApi.Application.Queries;
-using MovieApp.ProfileApi.Application.Responses.Movie;
-using MovieApp.ProfileApi.Application.Responses.Rating;
-using MovieApp.ProfileApi.Application.Responses.Profile;
-using MovieApp.ProfileApi.Domain.Exceptions;
 using MovieApp.Domain.Interfaces.Repository;
+using MovieApp.ProfileApi.Application.Pagination;
+using MovieApp.ProfileApi.Application.Queries;
+using MovieApp.ProfileApi.Application.Responses;
 using MovieApp.ProfileApi.Domain.Entities;
+using MovieApp.ProfileApi.Domain.Exceptions;
+using MovieApp.ProfileApi.Domain.Interfaces;
 using System.Linq.Expressions;
 
 namespace MovieApp.Application.Handlers.QueriesHandlers;
 public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, ProfileResponse>,
-                                 IRequestHandler<GetProfileFavoriteMoviesQuery, IEnumerable<MovieResponse>>,
-                                 IRequestHandler<GetProfileRatingsQuery, IEnumerable<RatingResponse>>
+                                 IRequestHandler<GetProfileFavoriteMoviesQuery, PagedList<MovieResponse>>,
+                                 IRequestHandler<GetProfileRatingsQuery, PagedList<RatingResponse>>
 {
-    private readonly IProfileRepository _ProfileRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ProfileQueryHandlers(IProfileRepository ProfileRepository, IMapper mapper)
+    public ProfileQueryHandlers(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _ProfileRepository = ProfileRepository;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
     public async Task<ProfileResponse> Handle(GetProfileByIdQuery request, CancellationToken cancellationToken)
     {
-        var Profile = await _ProfileRepository.FindByIdAsync(request.Id);
+        var Profile = await _unitOfWork.ProfileRepository.FindByIdAsync(request.Id);
         
         if (Profile is null)
         {
@@ -35,19 +35,39 @@ public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, Profile
         return _mapper.Map<ProfileResponse>(Profile);
     }
 
-    public async Task<IEnumerable<MovieResponse>> Handle(GetProfileFavoriteMoviesQuery request, CancellationToken cancellationToken)
+    public async Task<PagedList<MovieResponse>> Handle(GetProfileFavoriteMoviesQuery request, CancellationToken cancellationToken)
     {
-        Expression<Func<Movie, bool>> filter = x => x.Name.Contains(request.SearchTerm);
+        // Get All Favorite Movies By Profile
+        var favoriteMoviesQuery = _unitOfWork.ProfileRepository.FindAllFavoriteMoviesByIdAsync(request.Id);
 
-        var favoriteMovies = _mapper.Map<List<MovieResponse>>(await _ProfileRepository.FindFavoritesMovies(request.Id, request.Skip, request.Take, filter));
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            favoriteMoviesQuery = favoriteMoviesQuery.Where(x => x.Name.Contains(request.SearchTerm));
+        }
 
-        return favoriteMovies;
+        if (request.GenreId is not null)
+        {
+            favoriteMoviesQuery = favoriteMoviesQuery.Where(x => x.Genries.Any(x => x.Id == request.GenreId));
+        }
+
+        var totalCount = favoriteMoviesQuery.Count();
+        var items = favoriteMoviesQuery.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToList();
+
+        var favoriteMovies = _mapper.Map<List<MovieResponse>>(items);
+
+        return new PagedList<MovieResponse>(favoriteMovies, request.Page, request.PageSize, totalCount);
     }
 
-    public async Task<IEnumerable<RatingResponse>> Handle(GetProfileRatingsQuery request, CancellationToken cancellationToken)
+    public async Task<PagedList<RatingResponse>> Handle(GetProfileRatingsQuery request, CancellationToken cancellationToken)
     {
-        var ratings = _mapper.Map<List<RatingResponse>>(await _ProfileRepository.FindRatings(request.Id, request.Skip, request.Take));
+        // Get All Rating by Porfile
+        var ratingQuery = _unitOfWork.ProfileRepository.FindAllRatingByIdAsync(request.Id);
 
-        return ratings;
+        var totalCount = ratingQuery.Count();
+        var items = ratingQuery.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToList();
+
+        var ratings = _mapper.Map<List<RatingResponse>>(items);
+
+        return new PagedList<RatingResponse>(ratings, request.Page, request.PageSize, totalCount);
     }
 }

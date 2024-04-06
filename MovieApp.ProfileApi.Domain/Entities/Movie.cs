@@ -12,8 +12,8 @@ public class Movie : Entity
     public int Views { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; }
-    public IEnumerable<Profile> ProfileRating { get; set; }
-    public IEnumerable<Rating> Ratings { get; set; }
-    public IEnumerable<Profile> FavoritesProfiles { get; set; }
-    public IEnumerable<Genre> Genries { get; set; }
+    public IList<Profile> ProfileRating { get; set; }
+    public IList<Rating> Ratings { get; set; }
+    public IList<Profile> FavoritesProfiles { get; set; }
+    public IList<Genre> Genries { get; set; }
 }

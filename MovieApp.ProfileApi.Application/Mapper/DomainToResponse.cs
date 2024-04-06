@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using MovieApp.ProfileApi.Application.Commands;
-using MovieApp.ProfileApi.Application.Responses.Movie;
-using MovieApp.ProfileApi.Application.Responses.Profile;
-using MovieApp.ProfileApi.Application.Responses.Rating;
+using MovieApp.ProfileApi.Application.Responses;
 
 namespace MovieApp.ProfileApi.Application.Mapper;
 public class DomainToResponse : Profile
@@ -24,6 +22,12 @@ public class DomainToResponse : Profile
         #region Rating to RatingReponse
 
         CreateMap<Domain.Entities.Rating, RatingResponse>();
+
+        #endregion
+
+        #region Genre to GenreResponse
+
+        CreateMap<Domain.Entities.Genre, GenreResponse>();
 
         #endregion
     }

@@ -45,132 +45,132 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1c22f87b-2ace-4e29-a01f-66ee59a939bf"),
+                            Id = new Guid("388f4472-3227-4180-8ce4-27b3f6b1d5b1"),
                             Name = "Ação"
                         },
                         new
                         {
-                            Id = new Guid("4a61fd49-6ea3-467e-b791-f1d520b990d3"),
+                            Id = new Guid("6c201b8b-4282-4965-b347-778c59de74b1"),
                             Name = "Aventura"
                         },
                         new
                         {
-                            Id = new Guid("1bc31e4c-75a0-4f42-affc-0a770b0dc5e2"),
+                            Id = new Guid("947b7dce-4f1c-4f7b-a758-ebcc86e97e43"),
                             Name = "Cinema de arte"
                         },
                         new
                         {
-                            Id = new Guid("fa15737b-b921-4fe6-9150-ea10e775af74"),
+                            Id = new Guid("4cd3b891-2900-47d0-ba72-1420c36b3653"),
                             Name = "Chanchada"
                         },
                         new
                         {
-                            Id = new Guid("40c3f416-3d3e-4024-9987-e6eed475dfad"),
+                            Id = new Guid("a7cc8eae-e731-446c-9b85-ebc9db70107f"),
                             Name = "Comédia"
                         },
                         new
                         {
-                            Id = new Guid("f9d9e4fb-45e8-4359-8926-f92a448b3ca6"),
+                            Id = new Guid("a1d847b1-4668-4a8d-942e-f4c7c35702eb"),
                             Name = "Comédia de ação"
                         },
                         new
                         {
-                            Id = new Guid("670f2d61-62c0-43d4-bcf5-851980624cf1"),
+                            Id = new Guid("79b6aa69-ac86-4c00-a12b-54969eba8503"),
                             Name = "Comédia de terror"
                         },
                         new
                         {
-                            Id = new Guid("b1d27796-2b55-4020-b64d-a3959d71b6c6"),
+                            Id = new Guid("8023b5ed-3944-40b3-a0a3-4511f01f4b5d"),
                             Name = "Comédia dramática"
                         },
                         new
                         {
-                            Id = new Guid("8b911e2c-806c-4a2f-9d15-47b43a619c65"),
+                            Id = new Guid("66e2d70e-d4b6-4dbb-a5c8-6ef14151712c"),
                             Name = "Comédia romântica"
                         },
                         new
                         {
-                            Id = new Guid("09e78d02-b66a-4f94-84bd-61bde10b003f"),
+                            Id = new Guid("82892d07-cb22-48d9-83b0-dd6bb2ed7be9"),
                             Name = "Dança"
                         },
                         new
                         {
-                            Id = new Guid("edb5e7e7-0ed9-442c-a8fd-1defa4f2432f"),
+                            Id = new Guid("01582970-47ae-4e12-9d21-cd1278ae962a"),
                             Name = "Documentário"
                         },
                         new
                         {
-                            Id = new Guid("5cc9ebea-f2d4-49c2-9972-af0af68ab078"),
+                            Id = new Guid("a48f64d7-d5b6-45a1-b8c7-d4d034895712"),
                             Name = "Docuficção"
                         },
                         new
                         {
-                            Id = new Guid("c5a7f341-30dc-4fdd-864a-6b27f8f2e829"),
+                            Id = new Guid("80e25cf4-59f0-4859-93e4-d1f5d1a58452"),
                             Name = "Drama"
                         },
                         new
                         {
-                            Id = new Guid("aab1ce2a-9a2c-45d3-8f99-55d4adb13cd6"),
+                            Id = new Guid("ccd1d48a-5665-4cff-b866-02d8d9b043e1"),
                             Name = "Espionagem"
                         },
                         new
                         {
-                            Id = new Guid("555fb230-e24e-4e95-836d-a6a039659d02"),
+                            Id = new Guid("a54ef8cf-793a-42b3-bce3-39d2112a1348"),
                             Name = "Faroeste"
                         },
                         new
                         {
-                            Id = new Guid("7dc695db-c624-4854-9480-91fb587a91f6"),
+                            Id = new Guid("64035083-6df0-44b3-9ced-a1542aaf5cf5"),
                             Name = "Fantasia"
                         },
                         new
                         {
-                            Id = new Guid("9c928366-2a2b-4b7d-a2c8-80264b40165d"),
+                            Id = new Guid("f66920c2-3d2e-4fa1-a6e5-2d1d9fd80fd4"),
                             Name = "Fantasia científica"
                         },
                         new
                         {
-                            Id = new Guid("50602f64-ae1e-47ea-9b77-298afaf7c714"),
+                            Id = new Guid("fcec430e-0c46-4acf-a87e-1aed1855a3b5"),
                             Name = "Ficção científica"
                         },
                         new
                         {
-                            Id = new Guid("28efeafa-e04c-4323-8e9d-333d89588586"),
+                            Id = new Guid("2f5c0210-71f1-43e4-bbd6-725b48ac0f29"),
                             Name = "Filmes com truques"
                         },
                         new
                         {
-                            Id = new Guid("287f4e35-3487-43d6-8ad9-b9eaafb53904"),
+                            Id = new Guid("2b9473d6-4ca6-431f-b219-e592f5d7a563"),
                             Name = "Guerra"
                         },
                         new
                         {
-                            Id = new Guid("f662e40e-c6a5-4d45-a399-240775983aa1"),
+                            Id = new Guid("51c7d9ff-8303-48c5-bdb7-c07340abe56d"),
                             Name = "Mistério"
                         },
                         new
                         {
-                            Id = new Guid("3a6d12e4-d4d0-4f31-b460-57e049474d54"),
+                            Id = new Guid("45d63e6f-c403-405d-ae6e-73a01d606fc9"),
                             Name = "Musical"
                         },
                         new
                         {
-                            Id = new Guid("9dd4aea2-8b14-4784-b439-472bd540ebba"),
+                            Id = new Guid("d8d73828-09ff-4254-9f48-400c07dfd4d2"),
                             Name = "Policial"
                         },
                         new
                         {
-                            Id = new Guid("f6974b9e-7a7e-48b0-b3ad-aa8348265f7b"),
+                            Id = new Guid("dcac09a1-1fbd-4f67-ad95-d8fa998fac8e"),
                             Name = "Romance"
                         },
                         new
                         {
-                            Id = new Guid("c822beae-5132-488d-96b2-9b818ca2570d"),
+                            Id = new Guid("a48c915d-4cf0-4972-8ec8-01c233c3eb16"),
                             Name = "Terror"
                         },
                         new
                         {
-                            Id = new Guid("483f0cb6-244a-41c3-b42c-64d7d45e7f75"),
+                            Id = new Guid("d70fc206-397d-4a7e-8770-1fea0af76f69"),
                             Name = "Thriller"
                         });
                 });
@@ -233,6 +233,33 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                     b.ToTable("tb_movie", (string)null);
                 });
 
+            modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.Profile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("dt_created");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("dt_update");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_profile", (string)null);
+                });
+
             modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.Rating", b =>
                 {
                     b.Property<Guid>("ProfileId")
@@ -265,33 +292,6 @@ namespace MovieApp.ProfileApi.Infra.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("tb_rating", (string)null);
-                });
-
-            modelBuilder.Entity("MovieApp.ProfileApi.Domain.Entities.Profile", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("dt_created");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("dt_update");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("UserName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tb_Profile", (string)null);
                 });
 
             modelBuilder.Entity("tb_favorites_movies", b =>
