@@ -44,7 +44,7 @@ public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>
 
         if ((await _unitOfWork.ProfileRepository.FindByUserNameAsync(newProfile.UserName)) is not null)
         {
-            throw new ProfileAlreadyExistsException($"Already exists Profile with id = {newProfile.Id}.");
+            throw new ProfileAlreadyExistsException($"Already exists Profile with username = {newProfile.UserName}.");
         }
 
         await _unitOfWork.ProfileRepository.SaveAsync(newProfile);
