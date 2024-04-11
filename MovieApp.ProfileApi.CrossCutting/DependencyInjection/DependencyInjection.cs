@@ -55,7 +55,7 @@ public static class DependencyInjection
 
         #region Validators
         services.AddTransient<IValidator<CreateProfileCommand>, CreateProfileCommandValidator>();
-        services.AddTransient<IValidator<RatingDTO>, RegisterMovieRatingCommandValidator>();
+        services.AddTransient<IValidator<RegisterMovieRatingCommand>, RegisterMovieRatingCommandValidator>();
         #endregion
 
 

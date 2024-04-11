@@ -86,7 +86,7 @@ public class ProfileController : ControllerBase
     [ProducesResponseType(typeof(ResponseBase), 204)]
     public async Task<IActionResult> RegisterRating([FromRoute] Guid id, [FromBody] RegisterMovieRatingRequest registerMovieRatingRequest)
     {
-        var registerMovieRatingCommand = new RatingDTO
+        var registerMovieRatingCommand = new RegisterMovieRatingCommand
         {
             ProfileId = id,
             MovieId = registerMovieRatingRequest.MovieId,

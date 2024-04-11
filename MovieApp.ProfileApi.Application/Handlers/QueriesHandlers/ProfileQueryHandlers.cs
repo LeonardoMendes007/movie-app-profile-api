@@ -35,7 +35,7 @@ public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, Profile
     public async Task<PagedList<MovieResponse>> Handle(GetFavoriteMoviesByProfileQuery request, CancellationToken cancellationToken)
     {
         // Get All Favorite Movies By Profile
-        var favoriteMoviesQuery = _unitOfWork.ProfileRepository.FindAllFavoriteMoviesByIdAsync(request.ProfileId);
+        var favoriteMoviesQuery = _unitOfWork.ProfileRepository.FindAllFavoriteMoviesByIdAsync(request.ProfileId);                               
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {

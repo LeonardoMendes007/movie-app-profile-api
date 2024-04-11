@@ -10,15 +10,15 @@ using MovieApp.ProfileApi.Domain.Interfaces;
 namespace MovieApp.ProfileApi.Application.Handlers.CommandHandlers;
 public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>,
                                      IRequestHandler<RegisterFavoriteMovieCommand>,
-                                     IRequestHandler<RatingDTO>
+                                     IRequestHandler<RegisterMovieRatingCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     private readonly IValidator<CreateProfileCommand> _createProfileValidator;
-    private readonly IValidator<RatingDTO> _registerMovieRatingValidator;
+    private readonly IValidator<RegisterMovieRatingCommand> _registerMovieRatingValidator;
 
-    public ProfileCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateProfileCommand> createProfileValidator, IValidator<RatingDTO> registerMovieRatingValidator)
+    public ProfileCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateProfileCommand> createProfileValidator, IValidator<RegisterMovieRatingCommand> registerMovieRatingValidator)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -80,7 +80,7 @@ public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task Handle(RatingDTO request, CancellationToken cancellationToken)
+    public async Task Handle(RegisterMovieRatingCommand request, CancellationToken cancellationToken)
     {
         var validationResult = await _registerMovieRatingValidator.ValidateAsync(request);
 
