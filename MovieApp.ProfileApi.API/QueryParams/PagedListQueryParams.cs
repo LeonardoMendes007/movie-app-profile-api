@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MovieApp.ProfileApi.API.Queries;
+namespace MovieApp.ProfileApi.API.QueryParams;
 
-public class PagedListQuery
+public class PagedListQueryParams
 {
     [Range(1, int.MaxValue)]
     public int Page { get; set; } = 1;

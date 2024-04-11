@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MovieApp.ProfileApi.API.Queries;
+using MovieApp.ProfileApi.API.QueryParams;
 using MovieApp.ProfileApi.API.Request;
 using MovieApp.ProfileApi.API.Response;
 using MovieApp.ProfileApi.Application.Commands;
-using MovieApp.ProfileApi.Application.Pagination;
 using MovieApp.ProfileApi.Application.Pagination.Interface;
 using MovieApp.ProfileApi.Application.Queries;
 using MovieApp.ProfileApi.Application.Responses;
@@ -68,16 +67,16 @@ public class ProfileController : ControllerBase
 
     [HttpGet("{id}/favorites")]
     [ProducesResponseType(typeof(ResponseBase<IPagedList<MovieResponse>>), 200)]
-    public async Task<IActionResult> GetFavorites([FromRoute] Guid id, [FromQuery] Queries.GetFavoriteMoviesByProfileQuery getFavoriteMoviesByProfileRequest)
+    public async Task<IActionResult> GetFavorites([FromRoute] Guid id, [FromQuery] GetFavoriteMoviesByProfileQueryParams getFavoriteMoviesByProfileQueryParams)
     {
 
-        var getFavoriteMoviesByProfileQuery = new Application.Queries.GetFavoriteMoviesByProfileQuery
+        var getFavoriteMoviesByProfileQuery = new GetFavoriteMoviesByProfileQuery
         {
             ProfileId = id,
-            GenreId = getFavoriteMoviesByProfileRequest.GenreId,
-            Page = getFavoriteMoviesByProfileRequest.Page,
-            PageSize = getFavoriteMoviesByProfileRequest.PageSize,
-            SearchTerm = getFavoriteMoviesByProfileRequest.SearchTerm
+            GenreId = getFavoriteMoviesByProfileQueryParams.GenreId,
+            Page = getFavoriteMoviesByProfileQueryParams.Page,
+            PageSize = getFavoriteMoviesByProfileQueryParams.PageSize,
+            SearchTerm = getFavoriteMoviesByProfileQueryParams.SearchTerm
         };
 
         var movies = await _mediator.Send(getFavoriteMoviesByProfileQuery);
@@ -104,17 +103,17 @@ public class ProfileController : ControllerBase
 
     [HttpGet("{id}/ratings")]
     [ProducesResponseType(typeof(ResponseBase<IPagedList<RatingResponse>>), 200)]
-    public async Task<IActionResult> GetRatings([FromRoute] Guid id, [FromQuery] Queries.GetRatingsByProfileQuery getProfileRatingsRequest)
+    public async Task<IActionResult> GetRatings([FromRoute] Guid id, [FromQuery] GetRatingsByProfileQueryParams getRatingsByProfileQueryParams)
     {
-        var getRatingsByProfileQuery = new Application.Queries.GetRatingsByProfileQuery
+        var getRatingsByProfileQuery = new GetRatingsByProfileQuery
         {
              ProfileId = id,
-             Page = getProfileRatingsRequest.Page,
-             PageSize = getProfileRatingsRequest.PageSize
+             Page = getRatingsByProfileQueryParams.Page,
+             PageSize = getRatingsByProfileQueryParams.PageSize
         };
 
         var ratings = await _mediator.Send(getRatingsByProfileQuery);
 
-        return base.Ok(ResponseBase<IPagedList<RatingResponse>>.ResponseBaseFactory((Application.Pagination.Interface.IPagedList<RatingResponse>)ratings, HttpStatusCode.OK));
+        return base.Ok(ResponseBase<IPagedList<RatingResponse>>.ResponseBaseFactory(ratings, HttpStatusCode.OK));
     }
 }
