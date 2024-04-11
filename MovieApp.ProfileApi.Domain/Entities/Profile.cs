@@ -4,6 +4,7 @@ namespace MovieApp.ProfileApi.Domain.Entities;
 public class Profile : Entity
 {
     public string UserName { get; set; }
+    public string ImageUrl { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
     public DateTime UpdatedDate { get; set; }
     public IList<Movie> MoviesRating { get; set; } = new List<Movie>();

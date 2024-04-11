@@ -2,7 +2,7 @@
 using MovieApp.ProfileApi.Domain.Entities;
 
 namespace MovieApp.ProfileApi.Application.Commands;
-public class RegisterMovieRatingCommand : IRequest
+public class RatingDTO : IRequest
 {
     public Guid ProfileId { get; set; }
     public Guid MovieId { get; set; }

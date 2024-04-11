@@ -20,10 +20,10 @@ public class LoggingMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        _logger.LogInformation($"[${DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}] Received request: {context.Request.Method} {context.Request.Path}");
+        _logger.LogInformation($"[{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}] Received request: {context.Request.Method} {context.Request.Path}");
 
         await _next(context);
 
-        _logger.LogInformation($"[${DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}] Finished processing request: {context.Request.Method} {context.Request.Path} => {context.Response.StatusCode}");
+        _logger.LogInformation($"[{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}] Finished processing request: {context.Request.Method} {context.Request.Path} => {context.Response.StatusCode}");
     }
 }

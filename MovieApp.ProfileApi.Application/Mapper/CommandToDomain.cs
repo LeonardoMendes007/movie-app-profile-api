@@ -14,7 +14,7 @@ public class CommandToDomain : Profile
 
         #region RegisterMovieRatingCommand to Rating
 
-        CreateMap<RegisterMovieRatingCommand, Domain.Entities.Rating>();
+        CreateMap<RatingDTO, Domain.Entities.Rating>();
 
         #endregion
 

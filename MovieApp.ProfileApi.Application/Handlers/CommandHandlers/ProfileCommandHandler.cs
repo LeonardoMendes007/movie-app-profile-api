@@ -10,15 +10,15 @@ using MovieApp.ProfileApi.Domain.Interfaces;
 namespace MovieApp.ProfileApi.Application.Handlers.CommandHandlers;
 public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>,
                                      IRequestHandler<RegisterFavoriteMovieCommand>,
-                                     IRequestHandler<RegisterMovieRatingCommand>
+                                     IRequestHandler<RatingDTO>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     private readonly IValidator<CreateProfileCommand> _createProfileValidator;
-    private readonly IValidator<RegisterMovieRatingCommand> _registerMovieRatingValidator;
+    private readonly IValidator<RatingDTO> _registerMovieRatingValidator;
 
-    public ProfileCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateProfileCommand> createProfileValidator, IValidator<RegisterMovieRatingCommand> registerMovieRatingValidator)
+    public ProfileCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateProfileCommand> createProfileValidator, IValidator<RatingDTO> registerMovieRatingValidator)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -39,7 +39,12 @@ public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>
 
         if ((await _unitOfWork.ProfileRepository.FindByIdAsync(newProfile.Id)) is not null)
         {
-            throw new ProfileAlreadyExistsException(newProfile.Id);
+            throw new ProfileAlreadyExistsException($"Already exists Profile with id = {newProfile.Id}.");
+        }
+
+        if ((await _unitOfWork.ProfileRepository.FindByUserNameAsync(newProfile.UserName)) is not null)
+        {
+            throw new ProfileAlreadyExistsException($"Already exists Profile with id = {newProfile.Id}.");
         }
 
         await _unitOfWork.ProfileRepository.SaveAsync(newProfile);
@@ -75,7 +80,7 @@ public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task Handle(RegisterMovieRatingCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RatingDTO request, CancellationToken cancellationToken)
     {
         var validationResult = await _registerMovieRatingValidator.ValidateAsync(request);
 
