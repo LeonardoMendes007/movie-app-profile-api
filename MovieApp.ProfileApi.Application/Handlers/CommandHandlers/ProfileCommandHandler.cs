@@ -5,7 +5,7 @@ using MediatR;
 using MovieApp.ProfileApi.Application.Commands;
 using MovieApp.ProfileApi.Domain.Entities;
 using MovieApp.ProfileApi.Domain.Exceptions;
-using MovieApp.ProfileApi.Domain.Interfaces;
+using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
 
 namespace MovieApp.ProfileApi.Application.Handlers.CommandHandlers;
 public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>,

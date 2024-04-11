@@ -1,7 +1,7 @@
 ﻿using MovieApp.Domain.Interfaces.Repository;
 using MovieApp.Infra.Data.Persistence;
-using MovieApp.ProfileApi.Domain.Interfaces;
 using MovieApp.ProfileApi.Domain.Interfaces.Repositories;
+using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
 using MovieApp.ProfileApi.Infra.Persistence.Repositories;
 
 namespace MovieApp.ProfileApi.Infra.Persistence.UnitOfWork;

@@ -1,5 +1,7 @@
-﻿namespace MovieApp.ProfileApi.Application.Pagination;
-public class PagedList<T> 
+﻿using MovieApp.ProfileApi.Application.Pagination.Interface;
+
+namespace MovieApp.ProfileApi.Application.Pagination;
+public class PagedList<T> : IPagedList<T>
 {
     public List<T> Items { get; }
     public int Page { get; }

@@ -9,9 +9,10 @@ using MovieApp.Domain.Interfaces.Repository;
 using MovieApp.Infra.Data.Persistence;
 using MovieApp.ProfileApi.Application.Commands;
 using MovieApp.ProfileApi.Application.Mapper.AutoMapperConfig;
+using MovieApp.ProfileApi.Application.Pagination.Interface;
 using MovieApp.ProfileApi.Application.Validators;
-using MovieApp.ProfileApi.Domain.Interfaces;
 using MovieApp.ProfileApi.Domain.Interfaces.Repositories;
+using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
 using MovieApp.ProfileApi.Infra.Persistence.Repositories;
 using MovieApp.ProfileApi.Infra.Persistence.UnitOfWork;
 
@@ -57,6 +58,8 @@ public static class DependencyInjection
         services.AddTransient<IValidator<CreateProfileCommand>, CreateProfileCommandValidator>();
         services.AddTransient<IValidator<RegisterMovieRatingCommand>, RegisterMovieRatingCommandValidator>();
         #endregion
+
+        
 
 
         return services;
