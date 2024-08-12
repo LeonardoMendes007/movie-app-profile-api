@@ -17,4 +17,12 @@ public class PagedList<T> : IPagedList<T>
         PageSize = pageSize;
         TotalCount = totalCount;
     }
+
+    public static IPagedList<T> CreatePagedList(IQueryable<T> queryable, int page, int pageSize)
+    {
+        var totalCount = queryable.Count();
+        var items = queryable.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+        return new PagedList<T>(items, page, pageSize, totalCount);
+    }
 }

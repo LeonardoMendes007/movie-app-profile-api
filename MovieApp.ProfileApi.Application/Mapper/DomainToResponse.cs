@@ -9,25 +9,25 @@ public class DomainToResponse : Profile
     {
         #region Profile to ProfileReponse
 
-        CreateMap<Domain.Entities.Profile, ProfileResponse>();
+        CreateMap<MovieApp.Domain.Entities.Profile, ProfileSummary>();
 
         #endregion
 
         #region Movie to MovieReponse
 
-        CreateMap<Domain.Entities.Movie, MovieResponse>();
+        CreateMap<MovieApp.Domain.Entities.Movie, MovieSummary>();
 
         #endregion
 
         #region Rating to RatingReponse
 
-        CreateMap<Domain.Entities.Rating, RatingResponse>();
+        CreateMap<MovieApp.Domain.Entities.Rating, RatingSummary>();
 
         #endregion
 
         #region Genre to GenreResponse
 
-        CreateMap<Domain.Entities.Genre, GenreResponse>();
+        CreateMap<MovieApp.Domain.Entities.Genre, GenreSummary>();
 
         #endregion
     }

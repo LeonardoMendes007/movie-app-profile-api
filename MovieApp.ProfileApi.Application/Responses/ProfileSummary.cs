@@ -1,5 +1,5 @@
 ﻿namespace MovieApp.ProfileApi.Application.Responses;
-public class ProfileResponse
+public class ProfileSummary
 {
     public Guid Id { get; set; }
     public string UserName { get; set; }

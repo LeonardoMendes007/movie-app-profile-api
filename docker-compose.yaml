@@ -1,0 +1,28 @@
+version: '5'
+name: movie-app-profile-api
+services:
+  movie-app-database:
+    image: leonardomendes/sql-server-movie-app:v1
+    container_name: movie-app-database
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Leonardo321
+    networks:
+      - movie-app-net
+  movie-app-profile-api:
+    image: leonardomendes/movie-app-profile-api:v1
+    container_name: movie-app-profile-api
+    environment:
+      MOVIE_CONNECTION: Server=movie-app-database;Database=MovieAppDb;User Id=sa;Password=Leonardo321;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
+    ports:
+      - 8082:80
+    depends_on:
+      - movie-app-database
+    networks:
+      - movie-app-net
+    
+networks:
+  movie-app-net:
+    driver: bridge

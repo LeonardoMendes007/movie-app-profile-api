@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MovieApp.Domain" Version="1.0.1" />
+    <PackageReference Include="MovieApp.Infra.Data" Version="1.0.1" />
+  </ItemGroup>
+
 </Project>

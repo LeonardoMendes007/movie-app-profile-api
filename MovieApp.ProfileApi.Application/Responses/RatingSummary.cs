@@ -1,8 +1,8 @@
 ﻿namespace MovieApp.ProfileApi.Application.Responses;
-public class RatingResponse
+public class RatingSummary
 {
     public Guid ProfileId { get; set; }
-    public MovieResponse Movie { get; set; }
+    public MovieSummary Movie { get; set; }
     public int Score { get; set; }
     public string Comment { get; set; }
     public DateTime CreatedDate { get; set; }

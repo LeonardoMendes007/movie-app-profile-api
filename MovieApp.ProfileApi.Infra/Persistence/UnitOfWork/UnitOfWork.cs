@@ -1,5 +1,5 @@
 ﻿using MovieApp.Domain.Interfaces.Repository;
-using MovieApp.Infra.Data.Persistence;
+using MovieApp.Infra.Data;
 using MovieApp.ProfileApi.Domain.Interfaces.Repositories;
 using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
 using MovieApp.ProfileApi.Infra.Persistence.Repositories;

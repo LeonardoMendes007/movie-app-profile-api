@@ -8,13 +8,14 @@ public class CommandToDomain : Profile
     {
         #region CreateProfileCommand to Profile
 
-        CreateMap<CreateProfileCommand, Domain.Entities.Profile>();
+        CreateMap<CreateProfileCommand, MovieApp.Domain.Entities.Profile>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
 
         #endregion
 
         #region RegisterMovieRatingCommand to Rating
 
-        CreateMap<RegisterMovieRatingCommand, Domain.Entities.Rating>();
+        CreateMap<RegisterMovieRatingCommand, MovieApp.Domain.Entities.Rating>();
 
         #endregion
 

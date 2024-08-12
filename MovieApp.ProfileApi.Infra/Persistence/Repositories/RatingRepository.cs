@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MovieApp.Infra.Data.Persistence;
-using MovieApp.ProfileApi.Domain.Entities;
+using MovieApp.Domain.Entities;
+using MovieApp.Infra.Data;
 using MovieApp.ProfileApi.Domain.Interfaces.Repositories;
-using System.Linq;
-using System.Linq.Expressions;
 
 namespace MovieApp.ProfileApi.Infra.Persistence.Repositories;
 public class RatingRepository : IRatingRepository

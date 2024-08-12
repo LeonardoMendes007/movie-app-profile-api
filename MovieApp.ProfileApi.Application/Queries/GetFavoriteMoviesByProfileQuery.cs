@@ -3,7 +3,7 @@ using MovieApp.ProfileApi.Application.Pagination.Interface;
 using MovieApp.ProfileApi.Application.Responses;
 
 namespace MovieApp.ProfileApi.Application.Queries;
-public record GetFavoriteMoviesByProfileQuery : IRequest<IPagedList<MovieResponse>>
+public record GetFavoriteMoviesByProfileQuery : IRequest<IPagedList<MovieSummary>>
 {
     public Guid ProfileId { get; set; }
     public Guid? GenreId { get; set; }

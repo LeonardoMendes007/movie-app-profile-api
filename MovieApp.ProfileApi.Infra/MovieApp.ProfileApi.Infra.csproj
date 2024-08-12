@@ -6,13 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-    <ItemGroup>
-	    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
-	      <PrivateAssets>all</PrivateAssets>
-	      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	    </PackageReference>
-	    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MovieApp.Infra.Data" Version="1.0.1" />
+  </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MovieApp.ProfileApi.Domain\MovieApp.ProfileApi.Domain.csproj" />

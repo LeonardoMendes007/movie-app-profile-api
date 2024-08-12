@@ -3,13 +3,10 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MovieApp.Domain.Interfaces.Repository;
-using MovieApp.Infra.Data.Persistence;
+using MovieApp.Infra.Data.DependencyInjection;
 using MovieApp.ProfileApi.Application.Commands;
 using MovieApp.ProfileApi.Application.Mapper.AutoMapperConfig;
-using MovieApp.ProfileApi.Application.Pagination.Interface;
 using MovieApp.ProfileApi.Application.Validators;
 using MovieApp.ProfileApi.Domain.Interfaces.Repositories;
 using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
@@ -22,20 +19,11 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
-        
 
         #region Banco de dados
-        services.AddDbContext<MovieAppDbContext>(options =>
-        {
-            options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection"));
-            options.UseLoggerFactory(LoggerFactory.Create(builder =>
-            {
-                builder.AddFilter((category, level) =>
-                    category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information);
-            }));
-        });
+        var connectionString = Environment.GetEnvironmentVariable("MOVIE_CONNECTION") ?? configuration.GetConnectionString("MovieAppDbContext");
+        services.AddMovieAppDbContext(connectionString);
         #endregion
-
 
         #region MediatR
         var assembly = AppDomain.CurrentDomain.Load("MovieApp.ProfileApi.Application");

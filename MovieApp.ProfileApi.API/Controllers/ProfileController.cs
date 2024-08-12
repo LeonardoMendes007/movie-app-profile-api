@@ -24,12 +24,14 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ResponseBase<ProfileResponse>), 200)]
+    [ProducesResponseType(typeof(ResponseBase<ProfileSummary>), 200)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var Profile = await _mediator.Send(new GetProfileByIdQuery(id));
+        var Profile = await _mediator.Send(new GetProfileByIdQuery(){
+            Id = id
+        });
 
-        return Ok(ResponseBase<ProfileResponse>.ResponseBaseFactory(Profile, HttpStatusCode.OK));
+        return Ok(ResponseBase<ProfileSummary>.ResponseBaseFactory(Profile, HttpStatusCode.OK));
     }
 
     [HttpPost]
@@ -41,7 +43,8 @@ public class ProfileController : ControllerBase
         var createProfileCommand = new CreateProfileCommand
         {
             Id = createProfileRequest.Id,
-            UserName = createProfileRequest.UserName
+            UserName = createProfileRequest.UserName,
+            ImageUrl = createProfileRequest.ImageUrl
         };
 
         var id = await _mediator.Send(createProfileCommand);
@@ -66,7 +69,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("{id}/favorites")]
-    [ProducesResponseType(typeof(ResponseBase<IPagedList<MovieResponse>>), 200)]
+    [ProducesResponseType(typeof(ResponseBase<IPagedList<MovieSummary>>), 200)]
     public async Task<IActionResult> GetFavorites([FromRoute] Guid id, [FromQuery] GetFavoriteMoviesByProfileQueryParams getFavoriteMoviesByProfileQueryParams)
     {
 
@@ -81,7 +84,7 @@ public class ProfileController : ControllerBase
 
         var movies = await _mediator.Send(getFavoriteMoviesByProfileQuery);
 
-        return Ok(ResponseBase<IPagedList<MovieResponse>>.ResponseBaseFactory(movies, HttpStatusCode.OK));
+        return Ok(ResponseBase<IPagedList<MovieSummary>>.ResponseBaseFactory(movies, HttpStatusCode.OK));
     }
 
     [HttpPost("{id}/ratings")]
@@ -102,7 +105,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("{id}/ratings")]
-    [ProducesResponseType(typeof(ResponseBase<IPagedList<RatingResponse>>), 200)]
+    [ProducesResponseType(typeof(ResponseBase<IPagedList<RatingSummary>>), 200)]
     public async Task<IActionResult> GetRatings([FromRoute] Guid id, [FromQuery] GetRatingsByProfileQueryParams getRatingsByProfileQueryParams)
     {
         var getRatingsByProfileQuery = new GetRatingsByProfileQuery
@@ -114,6 +117,6 @@ public class ProfileController : ControllerBase
 
         var ratings = await _mediator.Send(getRatingsByProfileQuery);
 
-        return base.Ok(ResponseBase<IPagedList<RatingResponse>>.ResponseBaseFactory(ratings, HttpStatusCode.OK));
+        return base.Ok(ResponseBase<IPagedList<RatingSummary>>.ResponseBaseFactory(ratings, HttpStatusCode.OK));
     }
 }

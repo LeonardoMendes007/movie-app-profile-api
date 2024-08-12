@@ -1,4 +1,4 @@
-﻿using MovieApp.ProfileApi.Domain.Entities;
+﻿using MovieApp.Domain.Entities;
 
 namespace MovieApp.ProfileApi.Domain.Interfaces.Repositories;
 public interface IRatingRepository

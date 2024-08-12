@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieApp.Domain.Entities;
 using MovieApp.Domain.Interfaces.Repository;
-using MovieApp.Infra.Data.Persistence;
-using MovieApp.ProfileApi.Domain.Entities;
+using MovieApp.Infra.Data;
 using MovieApp.ProfileApi.Domain.Exceptions;
 
 namespace MovieApp.ProfileApi.Infra.Persistence.Repositories;
@@ -25,12 +25,12 @@ public class ProfileRepository : IProfileRepository
         return await _profiles.Where(x => x.UserName == userName).AsNoTracking().FirstOrDefaultAsync();
     }
 
-    public IQueryable<Movie> FindAllFavoriteMoviesByIdAsync(Guid id)
+    public IQueryable<Movie> FindAllFavoriteMoviesById(Guid id)
     {
         return _profiles.SelectMany(x => x.FavoritesMovies).Include(x => x.Genries).AsNoTracking().AsQueryable();
     }
 
-    public IQueryable<Rating> FindAllRatingByIdAsync(Guid id)
+    public IQueryable<Rating> FindAllRatingById(Guid id)
     {
         return _profiles.SelectMany(x => x.Ratings).Include(x => x.Movie).Include(x => x.Movie.Genries).AsNoTracking().AsQueryable();
     }

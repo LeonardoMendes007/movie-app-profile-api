@@ -8,9 +8,9 @@ using MovieApp.ProfileApi.Domain.Exceptions;
 using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
 
 namespace MovieApp.Application.Handlers.QueriesHandlers;
-public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, ProfileResponse>,
-                                 IRequestHandler<GetFavoriteMoviesByProfileQuery, IPagedList<MovieResponse>>,
-                                 IRequestHandler<GetRatingsByProfileQuery, IPagedList<RatingResponse>>
+public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, ProfileSummary>,
+                                 IRequestHandler<GetFavoriteMoviesByProfileQuery, IPagedList<MovieSummary>>,
+                                 IRequestHandler<GetRatingsByProfileQuery, IPagedList<RatingSummary>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, Profile
         _mapper = mapper;
     }
 
-    public async Task<ProfileResponse> Handle(GetProfileByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ProfileSummary> Handle(GetProfileByIdQuery request, CancellationToken cancellationToken)
     {
         var Profile = await _unitOfWork.ProfileRepository.FindByIdAsync(request.Id);
         
@@ -30,13 +30,13 @@ public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, Profile
             throw new ResourceNotFoundException(request.Id);
         }
 
-        return _mapper.Map<ProfileResponse>(Profile);
+        return _mapper.Map<ProfileSummary>(Profile);
     }
 
-    public async Task<IPagedList<MovieResponse>> Handle(GetFavoriteMoviesByProfileQuery request, CancellationToken cancellationToken)
+    public async Task<IPagedList<MovieSummary>> Handle(GetFavoriteMoviesByProfileQuery request, CancellationToken cancellationToken)
     {
         // Get All Favorite Movies By Profile
-        var favoriteMoviesQuery = _unitOfWork.ProfileRepository.FindAllFavoriteMoviesByIdAsync(request.ProfileId);                               
+        var favoriteMoviesQuery = _unitOfWork.ProfileRepository.FindAllFavoriteMoviesById(request.ProfileId);                               
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
@@ -51,21 +51,21 @@ public class ProfileQueryHandlers : IRequestHandler<GetProfileByIdQuery, Profile
         var totalCount = favoriteMoviesQuery.Count();
         var items = favoriteMoviesQuery.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToList();
 
-        var favoriteMovies = _mapper.Map<List<MovieResponse>>(items);
+        var favoriteMovies = _mapper.Map<List<MovieSummary>>(items);
 
-        return new PagedList<MovieResponse>(favoriteMovies, request.Page, request.PageSize, totalCount);
+        return new PagedList<MovieSummary>(favoriteMovies, request.Page, request.PageSize, totalCount);
     }
 
-    public async Task<IPagedList<RatingResponse>> Handle(GetRatingsByProfileQuery request, CancellationToken cancellationToken)
+    public async Task<IPagedList<RatingSummary>> Handle(GetRatingsByProfileQuery request, CancellationToken cancellationToken)
     {
         // Get All Rating by Porfile
-        var ratingQuery = _unitOfWork.ProfileRepository.FindAllRatingByIdAsync(request.ProfileId);
+        var ratingQuery = _unitOfWork.ProfileRepository.FindAllRatingById(request.ProfileId);
 
         var totalCount = ratingQuery.Count();
         var items = ratingQuery.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToList();
 
-        var ratings = _mapper.Map<List<RatingResponse>>(items);
+        var ratings = _mapper.Map<List<RatingSummary>>(items);
 
-        return new PagedList<RatingResponse>(ratings, request.Page, request.PageSize, totalCount);
+        return new PagedList<RatingSummary>(ratings, request.Page, request.PageSize, totalCount);
     }
 }

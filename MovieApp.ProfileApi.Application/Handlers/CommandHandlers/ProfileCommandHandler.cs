@@ -3,7 +3,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using MovieApp.ProfileApi.Application.Commands;
-using MovieApp.ProfileApi.Domain.Entities;
+using MovieApp.Domain.Entities;
 using MovieApp.ProfileApi.Domain.Exceptions;
 using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
 
@@ -35,7 +35,7 @@ public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>
             throw new Exceptions.ValidationException(validationResult.ToDictionary());
         }
 
-        var newProfile = _mapper.Map<Domain.Entities.Profile>(request);
+        var newProfile = _mapper.Map<MovieApp.Domain.Entities.Profile>(request);
 
         if ((await _unitOfWork.ProfileRepository.FindByIdAsync(newProfile.Id)) is not null)
         {
