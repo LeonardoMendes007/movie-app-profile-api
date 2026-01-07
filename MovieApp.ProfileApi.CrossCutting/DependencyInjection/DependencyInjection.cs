@@ -12,6 +12,8 @@ using MovieApp.ProfileApi.Domain.Interfaces.Repositories;
 using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
 using MovieApp.ProfileApi.Infra.Persistence.Repositories;
 using MovieApp.ProfileApi.Infra.Persistence.UnitOfWork;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 namespace MovieApp.ProfileApi.CrossCutting.DependencyInjection;
 public static class DependencyInjection
@@ -47,8 +49,21 @@ public static class DependencyInjection
         services.AddTransient<IValidator<RegisterMovieRatingCommand>, RegisterMovieRatingCommandValidator>();
         #endregion
 
-        
+        #region Telemetry
 
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService("MovieApp.ProfileApi"))
+            .WithTracing(tracing =>
+            {
+                tracing
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddSqlClientInstrumentation(o => o.SetDbStatementForText = true);
+
+                tracing.AddOtlpExporter();
+            });
+
+        #endregion
 
         return services;
     }

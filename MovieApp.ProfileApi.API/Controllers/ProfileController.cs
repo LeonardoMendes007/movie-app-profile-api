@@ -24,7 +24,6 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ResponseBase<ProfileSummary>), 200)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var Profile = await _mediator.Send(new GetProfileByIdQuery(){
@@ -35,9 +34,6 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(ResponseBase), 200)]
-    [ProducesResponseType(typeof(ResponseBase), 409)]
-    [ProducesResponseType(typeof(ProblemDetails), 400)]
     public async Task<IActionResult> Post([FromBody] CreateProfileRequest createProfileRequest)
     {
         var createProfileCommand = new CreateProfileCommand
@@ -53,23 +49,7 @@ public class ProfileController : ControllerBase
         
     }
 
-    [HttpPost("{id}/favorites")]
-    [ProducesResponseType(typeof(ResponseBase), 204)]
-    public async Task<IActionResult> RegisterFavorite([FromRoute] Guid id, [FromBody] RegisterFavoriteMovieRequest registerFavoriteMovieRequest)
-    {
-        var registerFavoriteMovieCommand = new RegisterFavoriteMovieCommand
-        {
-            ProfileId = id,
-            MovieId = registerFavoriteMovieRequest.MovieId
-        };
-
-        await _mediator.Send(registerFavoriteMovieCommand);
-
-        return StatusCode((int)HttpStatusCode.NoContent, ResponseBase.ResponseBaseFactory(HttpStatusCode.NoContent));
-    }
-
     [HttpGet("{id}/favorites")]
-    [ProducesResponseType(typeof(ResponseBase<IPagedList<MovieSummary>>), 200)]
     public async Task<IActionResult> GetFavorites([FromRoute] Guid id, [FromQuery] GetFavoriteMoviesByProfileQueryParams getFavoriteMoviesByProfileQueryParams)
     {
 
@@ -87,8 +67,35 @@ public class ProfileController : ControllerBase
         return Ok(ResponseBase<IPagedList<MovieSummary>>.ResponseBaseFactory(movies, HttpStatusCode.OK));
     }
 
+    [HttpPost("{id}/favorites")]
+    public async Task<IActionResult> RegisterFavorite([FromRoute] Guid id, [FromBody] RegisterFavoriteMovieRequest registerFavoriteMovieRequest)
+    {
+        var registerFavoriteMovieCommand = new RegisterFavoriteMovieCommand
+        {
+            ProfileId = id,
+            MovieId = registerFavoriteMovieRequest.MovieId
+        };
+
+        await _mediator.Send(registerFavoriteMovieCommand);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}/favorites/{movieId}")]
+    public async Task<IActionResult> DeleteFavorite([FromRoute] Guid id, [FromRoute] Guid movieId)
+    {
+        var deleteFavoriteMovieCommand = new DeleteFavoriteMovieCommand
+        {
+            ProfileId = id,
+            MovieId = movieId
+        };
+
+        await _mediator.Send(deleteFavoriteMovieCommand);
+
+        return NoContent();
+    }
+
     [HttpPost("{id}/ratings")]
-    [ProducesResponseType(typeof(ResponseBase), 204)]
     public async Task<IActionResult> RegisterRating([FromRoute] Guid id, [FromBody] RegisterMovieRatingRequest registerMovieRatingRequest)
     {
         var registerMovieRatingCommand = new RegisterMovieRatingCommand
@@ -105,7 +112,6 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("{id}/ratings")]
-    [ProducesResponseType(typeof(ResponseBase<IPagedList<RatingSummary>>), 200)]
     public async Task<IActionResult> GetRatings([FromRoute] Guid id, [FromQuery] GetRatingsByProfileQueryParams getRatingsByProfileQueryParams)
     {
         var getRatingsByProfileQuery = new GetRatingsByProfileQuery

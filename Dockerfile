@@ -15,6 +15,9 @@ COPY ["MovieApp.ProfileApi.CrossCutting/MovieApp.ProfileApi.CrossCutting.csproj"
 COPY ["MovieApp.ProfileApi.Application/MovieApp.ProfileApi.Application.csproj", "MovieApp.ProfileApi.Application/"]
 COPY ["MovieApp.ProfileApi.Domain/MovieApp.ProfileApi.Domain.csproj", "MovieApp.ProfileApi.Domain/"]
 COPY ["MovieApp.ProfileApi.Infra/MovieApp.ProfileApi.Infra.csproj", "MovieApp.ProfileApi.Infra/"]
+COPY . .
+COPY "nuget.config" .
+COPY "Packages" .
 RUN dotnet restore "MovieApp.ProfileApi.API/MovieApp.ProfileApi.API.csproj"
 COPY . .
 WORKDIR "/src/MovieApp.ProfileApi.API"

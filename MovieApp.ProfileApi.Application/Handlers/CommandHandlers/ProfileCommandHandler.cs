@@ -6,11 +6,14 @@ using MovieApp.ProfileApi.Application.Commands;
 using MovieApp.Domain.Entities;
 using MovieApp.ProfileApi.Domain.Exceptions;
 using MovieApp.ProfileApi.Domain.Interfaces.UnitOfWork;
+using System.Collections.Generic;
+
 
 namespace MovieApp.ProfileApi.Application.Handlers.CommandHandlers;
 public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>,
                                      IRequestHandler<RegisterFavoriteMovieCommand>,
-                                     IRequestHandler<RegisterMovieRatingCommand>
+                                     IRequestHandler<RegisterMovieRatingCommand>,
+                                     IRequestHandler<DeleteFavoriteMovieCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -113,5 +116,20 @@ public class ProfileCommandHandler : IRequestHandler<CreateProfileCommand, Guid>
         await _unitOfWork.RatingRepository.SaveAsync(rating);
         await _unitOfWork.CommitAsync();
 
+    }
+
+    public async Task Handle(DeleteFavoriteMovieCommand request, CancellationToken cancellationToken)
+    {
+        var profile = await _unitOfWork.ProfileRepository.FindByIdAsyncTracking(request.ProfileId);
+
+        if (profile is null)
+        {
+            throw new ResourceNotFoundException(request.ProfileId, $"No Profile found with id = {request.ProfileId}.");
+        }
+
+        profile.FavoritesMovies.Where(x => x.Id == request.MovieId).ToList().ForEach(m => profile.FavoritesMovies.Remove(m));
+
+        await _unitOfWork.ProfileRepository.UpdateAsync(profile);
+        await _unitOfWork.CommitAsync();
     }
 }

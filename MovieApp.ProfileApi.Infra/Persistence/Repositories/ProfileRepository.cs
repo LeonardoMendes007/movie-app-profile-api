@@ -20,6 +20,11 @@ public class ProfileRepository : IProfileRepository
         return await _profiles.Where(x => x.Id == id).Include(x => x.Ratings).Include(x => x.FavoritesMovies).AsNoTracking().FirstOrDefaultAsync();
     }
 
+    public async Task<Profile> FindByIdAsyncTracking(Guid id)
+    {
+        return await _profiles.Where(x => x.Id == id).Include(x => x.Ratings).Include(x => x.FavoritesMovies).FirstOrDefaultAsync();
+    }
+
     public async Task<Profile> FindByUserNameAsync(string userName)
     {
         return await _profiles.Where(x => x.UserName == userName).AsNoTracking().FirstOrDefaultAsync();
